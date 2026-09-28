@@ -14,7 +14,7 @@ public class WebConfig {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/api/**")
-						.allowedOrigins("http://localhost:5173")
+						.allowedOrigins("http://localhost:5173","adventurexp-dyg7gcfbbackhphq.spaincentral-01.azurewebsites.net")
 						.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS");
 			}
 		};
