@@ -1,7 +1,11 @@
 package com.adventurexp.backend.service;
 
+import com.adventurexp.backend.dto.CreateReservationRequest;
+import com.adventurexp.backend.model.Activity;
 import com.adventurexp.backend.model.Customer;
 import com.adventurexp.backend.model.Reservation;
+import com.adventurexp.backend.repository.ActivityRepo;
+import com.adventurexp.backend.repository.CustomerRepo;
 import com.adventurexp.backend.repository.ReservationRepo;
 import org.springframework.stereotype.Service;
 
@@ -12,10 +16,16 @@ import java.util.Optional;
 public class ReservationService
 {
     private final ReservationRepo repository;
+    private final CustomerRepo customerRepo;
+    private final CustomerService customerService;
+    private final ActivityRepo activityRepo;
 
-    public ReservationService(ReservationRepo repository)
+    public ReservationService(ReservationRepo repository, CustomerRepo customerRepo, CustomerService customerService, ActivityRepo activityRepo)
     {
         this.repository = repository;
+        this.customerRepo = customerRepo;
+        this.customerService = customerService;
+        this.activityRepo = activityRepo;
     }
 
     public List<Reservation> getReservations()
@@ -35,8 +45,32 @@ public class ReservationService
         return reservation.get();
     }
 
-    public void createReservation(Reservation reservation)
+    public void createReservation(CreateReservationRequest request)
     {
+        Customer customer = customerRepo.findByEmail(request.email());
+
+        if (customer == null)
+        {
+            customer = customerService.createCustomer(new Customer(
+                    request.name(),
+                    request.email(),
+                    request.phone()
+                    ));
+        }
+
+        Reservation reservation = new Reservation();
+
+        reservation.setCustomer(customer);
+
+        Activity activity = activityRepo.findById(request.activityId())
+                        .orElseThrow(() -> new RuntimeException());
+
+        reservation.setActivity(activity);
+
+        reservation.setStartTime(request.time());
+        reservation.setDate(request.date());
+        reservation.setNumberOfPeople(request.numberOfPeople());
+
         repository.save(reservation);
     }
 }

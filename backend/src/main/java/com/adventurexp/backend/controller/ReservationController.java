@@ -1,5 +1,6 @@
 package com.adventurexp.backend.controller;
 
+import com.adventurexp.backend.dto.CreateReservationRequest;
 import com.adventurexp.backend.model.Activity;
 import com.adventurexp.backend.model.Customer;
 import com.adventurexp.backend.model.Reservation;
@@ -41,10 +42,17 @@ public class ReservationController
     }
 
     @PostMapping
-    public ResponseEntity<Void> createReservation(@RequestBody Reservation reservation)
+    public ResponseEntity<Void> createReservation(@RequestBody CreateReservationRequest request)
     {
-        service.createReservation(reservation);
+        try
+        {
+            service.createReservation(request);
 
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        }
+        catch (RuntimeException e)
+        {
+            return ResponseEntity.badRequest().build();
+        }
     }
 }

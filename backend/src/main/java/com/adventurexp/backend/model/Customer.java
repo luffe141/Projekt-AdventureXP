@@ -27,6 +27,13 @@ public class Customer
 
     public Customer(){}
 
+    public Customer(String name, String email, String phone)
+    {
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+    }
+
     public int getCustomerId() {
         return customerId;
     }
