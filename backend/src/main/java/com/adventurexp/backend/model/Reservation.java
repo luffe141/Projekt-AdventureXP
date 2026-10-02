@@ -22,7 +22,6 @@ public class Reservation
     @Column(nullable = false)
     private int numberOfPeople;
 
-
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
@@ -67,5 +66,13 @@ public class Reservation
 
     public void setActivity(Activity activity) {
         this.activity = activity;
+    }
+
+    public int getNumberOfPeople() {
+        return numberOfPeople;
+    }
+
+    public void setNumberOfPeople(int numberOfPeople) {
+        this.numberOfPeople = numberOfPeople;
     }
 }

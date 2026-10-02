@@ -5,6 +5,7 @@ import com.adventurexp.backend.repository.ActivityRepo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ActivityService
@@ -19,5 +20,17 @@ public class ActivityService
     public List<Activity> getActivities()
     {
         return repository.findAll();
+    }
+
+    public Activity getActivityById(int id)
+    {
+        Optional<Activity> activity = repository.findById(id);
+
+        if (activity.isEmpty())
+        {
+            throw new RuntimeException();
+        }
+
+        return activity.get();
     }
 }
