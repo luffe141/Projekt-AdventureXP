@@ -1,0 +1,165 @@
+.hero {
+  min-height: max(600px, min(740px, 100svh));
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  background: #10171a;
+}
+
+.backdrop {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background-image:
+    linear-gradient(
+      90deg,
+      #101619 0%,
+      rgb(16 22 25 / 97%) 24%,
+      rgb(16 22 25 / 68%) 43%,
+      rgb(16 22 25 / 10%) 77%
+    ),
+    linear-gradient(0deg, rgb(10 15 18 / 43%), transparent 34%),
+    url("../../../assets/hero2.png");
+  background-position:
+    center,
+    center,
+    center 53%;
+  background-size: cover;
+  background-color: #101619;
+}
+
+.content {
+  padding-top: 72px;
+  padding-bottom: 65px;
+}
+
+.hero h1 {
+  margin: 0;
+  font-family: "Barlow Condensed", Impact, sans-serif;
+  font-size: clamp(68px, 7vw, 102px);
+  font-weight: 900;
+  line-height: 0.81;
+  letter-spacing: -0.035em;
+  text-transform: uppercase;
+}
+
+.hero h1 em {
+  color: var(--orange);
+  font-style: normal;
+}
+
+.intro {
+  max-width: 385px;
+  margin-top: 20px;
+  color: #e0e2df;
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-top: 23px;
+}
+
+.stats {
+  position: absolute;
+  right: 2.6vw;
+  bottom: 22px;
+  display: flex;
+  background: rgb(17 21 25 / 88%);
+  border: 1px solid rgb(255 255 255 / 12%);
+  box-shadow: 0 8px 30px rgb(0 0 0 / 22%);
+}
+
+.stats div {
+  min-width: 94px;
+  padding: 11px 14px 10px;
+  border-right: 1px solid rgb(255 255 255 / 12%);
+}
+
+.stats div:last-child {
+  border-right: 0;
+}
+.stats strong {
+  display: block;
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 23px;
+  font-weight: 800;
+  line-height: 1;
+}
+.stats span {
+  display: block;
+  margin-top: 5px;
+  color: #a9a9a6;
+  font-size: 8px;
+  text-transform: uppercase;
+}
+
+.scrollCue {
+  position: absolute;
+  bottom: 26px;
+  left: 2.6vw;
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border: 1px solid rgb(255 255 255 / 40%);
+  border-radius: 50%;
+  color: white;
+  font-size: 15px;
+}
+
+@media (min-width: 1500px) {
+  .stats {
+    right: max(2.6vw, calc((100vw - 1320px) / 2));
+  }
+  .scrollCue {
+    left: max(2.6vw, calc((100vw - 1320px) / 2));
+  }
+}
+
+@media (max-width: 760px) {
+  .hero {
+    min-height: 690px;
+    align-items: center;
+  }
+  .backdrop {
+    background-image:
+      linear-gradient(90deg, rgb(13 19 22 / 91%), rgb(13 19 22 / 45%)),
+      linear-gradient(0deg, #101619 0%, transparent 50%),
+      url("../../../assets/hero2.png");
+    background-position:
+      center,
+      center,
+      58% center;
+  }
+  .content {
+    padding-top: 34px;
+    padding-bottom: 110px;
+  }
+  .hero h1 {
+    font-size: clamp(62px, 14vw, 88px);
+  }
+  .intro {
+    max-width: 340px;
+    font-size: 13px;
+  }
+  .stats {
+    right: 20px;
+    bottom: 18px;
+    left: 20px;
+    justify-content: center;
+  }
+  .stats div {
+    flex: 1;
+    min-width: 0;
+    padding-inline: 10px;
+    text-align: center;
+  }
+  .scrollCue {
+    display: none;
+  }
+}

@@ -1,27 +1,21 @@
-import { useEffect, useState } from "react";
 import "./App.css";
+import Header from "./components/header/header";
+import Footer from "./components/footer/footer";
+import Hero from "./components/home/hero/Hero";
+import Activities from "./components/home/activities/Activities";
+import Firmabooking from "./components/home/firmabooking/Firmabooking";
+import BookingBanner from "./components/home/booking-banner/BookingBanner";
 
 function App() {
-  const [message, setMessage] = useState("Henter besked fra backend...");
-
-  useEffect(() => {
-    fetch("http://localhost:8080/api/hello")
-      .then((res) => res.json())
-      .then((data) => setMessage(data.message))
-      .catch(() =>
-        setMessage(
-          "Kunne ikke kontakte backend. Kør Spring Boot serveren på port 8080.",
-        ),
-      );
-  }, []);
-
   return (
-    <section id="center">
-      <div>
-        <h1>AdventureXP</h1>
-        <p>{message}</p>
-      </div>
-    </section>
+    <main>
+      <Header />
+      <Hero />
+      <Activities />
+      <Firmabooking />
+      <BookingBanner />
+      <Footer />
+    </main>
   );
 }
 
