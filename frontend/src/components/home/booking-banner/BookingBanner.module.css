@@ -1,0 +1,41 @@
+.bookingBanner {
+  padding: 58px 0;
+  background: var(--orange);
+  color: white;
+}
+.inner {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 30px;
+}
+.bookingBanner .eyebrow {
+  color: rgb(255 255 255 / 75%);
+}
+.bookingBanner h2 {
+  margin: 0;
+  font-family: "Barlow Condensed", Impact, sans-serif;
+  font-size: clamp(48px, 5vw, 70px);
+  font-weight: 900;
+  line-height: 0.84;
+  letter-spacing: -0.035em;
+  text-transform: uppercase;
+}
+.bookingBanner .button {
+  background: var(--ink);
+}
+.bookingBanner .button:hover {
+  background: #292f33;
+}
+@media (max-width: 760px) {
+  .bookingBanner {
+    padding: 45px 0;
+  }
+  .inner {
+    align-items: start;
+    flex-direction: column;
+  }
+  .bookingBanner h2 {
+    font-size: 56px;
+  }
+}
