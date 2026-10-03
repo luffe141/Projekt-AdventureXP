@@ -2,6 +2,14 @@ import { useEffect, useState } from "react";
 import styles from "./BookingModal.module.css";
 
 const activityOptions = ["Gokart", "Paintball", "Minigolf", "Sumobrydning"];
+const API_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8080";
+
+function normalizeActivityName(name) {
+  return name
+    .toLowerCase()
+    .replace(/wrestling|brydning/g, "")
+    .replace(/[^a-z]/g, "");
+}
 
 function getToday() {
   const today = new Date();
@@ -13,7 +21,14 @@ function getToday() {
 
 function BookingModal({ activity, onClose }) {
   const [selectedActivity, setSelectedActivity] = useState(activity);
+  const [activities, setActivities] = useState([]);
   const [submitted, setSubmitted] = useState(false);
+
+  useEffect(() => {
+    fetch(`${API_URL}/api/activities`)
+      .then((response) => response.json())
+      .then(setActivities);
+  }, []);
 
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -28,9 +43,30 @@ function BookingModal({ activity, onClose }) {
     };
   }, [onClose]);
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
-    setSubmitted(true);
+    const formData = new FormData(event.currentTarget);
+    const selected = activities.find(
+      (option) =>
+        normalizeActivityName(option.name) ===
+        normalizeActivityName(selectedActivity),
+    );
+
+    const response = await fetch(`${API_URL}/api/reservations`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: formData.get("name"),
+        email: formData.get("email"),
+        phone: formData.get("phone"),
+        activityId: selected.activityId,
+        date: formData.get("date"),
+        time: formData.get("time"),
+        numberOfPeople: Number(formData.get("people")),
+      }),
+    });
+
+    if (response.ok) setSubmitted(true);
   }
 
   return (
@@ -108,6 +144,7 @@ function BookingModal({ activity, onClose }) {
                 name="activity"
                 value={selectedActivity}
                 onChange={(event) => setSelectedActivity(event.target.value)}
+                disabled={!activities.length}
               >
                 {activityOptions.map((option) => (
                   <option key={option} value={option}>
@@ -135,6 +172,11 @@ function BookingModal({ activity, onClose }) {
             </label>
 
             <label>
+              <span>Ønsket tidspunkt</span>
+              <input name="time" type="time" required />
+            </label>
+
+            <label>
               <span>Telefon</span>
               <input
                 name="phone"
@@ -158,7 +200,11 @@ function BookingModal({ activity, onClose }) {
               >
                 Annuller
               </button>
-              <button className={styles.submitButton} type="submit">
+              <button
+                className={styles.submitButton}
+                type="submit"
+                disabled={!activities.length}
+              >
                 Send forespørgsel
               </button>
             </div>
