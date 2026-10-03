@@ -35,8 +35,8 @@ public class CustomerService
         return customer.get();
     }
 
-    public void createCustomer(Customer customer)
+    public Customer createCustomer(Customer customer)
     {
-        repository.save(customer);
+        return repository.save(customer);
     }
 }
