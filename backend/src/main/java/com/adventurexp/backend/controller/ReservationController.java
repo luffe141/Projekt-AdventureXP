@@ -55,4 +55,22 @@ public class ReservationController
             return ResponseEntity.badRequest().build();
         }
     }
+
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updateReservation(@PathVariable int id, @RequestBody Reservation reservation)
+    {
+        service.updateReservation(id, reservation);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+
+   @DeleteMapping("/{id}")
+   public ResponseEntity<Void> deleteReservation(@PathVariable int id)
+   {
+       service.deleteReservation(id);
+
+       return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+   }
 }
