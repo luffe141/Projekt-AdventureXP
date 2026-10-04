@@ -39,4 +39,22 @@ public class CustomerService
     {
         return repository.save(customer);
     }
+
+    public void updateCustomer(int id, Customer update)
+    {
+        Optional<Customer> customerOptional = repository.findById(id);
+
+        if (customerOptional.isEmpty())
+        {
+            throw new RuntimeException();
+        }
+
+        Customer customer = customerOptional.get();
+
+        customer.setName(update.getName());
+        customer.setEmail(update.getEmail());
+        customer.setPhone(update.getPhone());
+
+        repository.save(customer);
+    }
 }

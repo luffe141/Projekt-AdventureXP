@@ -47,4 +47,12 @@ public class CustomerController
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updateCustomer(@PathVariable int id, @RequestBody Customer update)
+    {
+        service.updateCustomer(id, update);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 }

@@ -65,6 +65,7 @@ public class ReservationService
         Activity activity = activityRepo.findById(request.activityId())
                         .orElseThrow(() -> new RuntimeException());
 
+
         reservation.setActivity(activity);
 
         reservation.setStartTime(request.time());
@@ -72,5 +73,35 @@ public class ReservationService
         reservation.setNumberOfPeople(request.numberOfPeople());
 
         repository.save(reservation);
+    }
+
+    public void updateReservation(int id, Reservation update)
+    {
+        Optional<Reservation> reservationOptional = repository.findById(id);
+
+        if (reservationOptional.isEmpty())
+        {
+            throw new RuntimeException();
+        }
+
+        Reservation reservation = reservationOptional.get();
+
+        reservation.setDate(update.getDate());
+        reservation.setStartTime(update.getStartTime());
+        reservation.setNumberOfPeople(update.getNumberOfPeople());
+
+        repository.save(reservation);
+    }
+
+    public void deleteReservation(int id)
+    {
+        Optional<Reservation> reservationOptional = repository.findById(id);
+
+        if (reservationOptional.isEmpty())
+        {
+            throw new RuntimeException();
+        }
+
+        repository.delete(reservationOptional.get());
     }
 }
