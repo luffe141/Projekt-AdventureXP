@@ -1,0 +1,110 @@
+.panel {
+  min-width: 0;
+  padding: 15px;
+  border: 1px solid #e4dfd5;
+  border-radius: 8px;
+  background: #fbfaf6;
+  box-shadow: 0 1px 2px rgb(37 31 21 / 3%);
+}
+
+.sidePanels {
+  display: grid;
+  gap: 15px;
+}
+
+.smallPanel {
+  padding: 14px;
+}
+
+.smallPanelTitle {
+  margin: 0 0 10px;
+  color: #77736a;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.bookingList {
+  display: grid;
+}
+
+.bookingRow {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr) 8px;
+  gap: 8px;
+  align-items: center;
+  min-height: 47px;
+  border-bottom: 1px solid #e0dbd0;
+}
+
+.bookingRow:last-child {
+  border-bottom: 0;
+}
+
+.bookingTime {
+  color: var(--activity-color);
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.bookingName {
+  margin: 0;
+  font-size: 9px;
+  font-weight: 700;
+}
+
+.bookingMeta {
+  margin: 3px 0 0;
+  color: #77736a;
+  font-size: 8px;
+}
+
+.bookingDot {
+  width: 7px;
+  height: 7px;
+  flex: 0 0 auto;
+  border-radius: 2px;
+  background: var(--activity-color);
+}
+
+.equipmentList {
+  display: grid;
+  gap: 10px;
+}
+
+.equipmentRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  color: #4f4c47;
+  font-size: 9px;
+}
+
+.equipmentBadge {
+  padding: 4px 6px;
+  border-radius: 4px;
+  background: var(--activity-tint);
+  color: var(--activity-color);
+  font-size: 7px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+@media (max-width: 1050px) {
+  .sidePanels {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .panel {
+    padding: 11px;
+  }
+
+  .sidePanels {
+    grid-template-columns: 1fr;
+  }
+}

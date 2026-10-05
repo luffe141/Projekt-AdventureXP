@@ -1,0 +1,32 @@
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 13px;
+  margin-bottom: 16px;
+}
+
+.statCard {
+  min-height: 108px;
+  padding: 15px 14px 12px;
+  border: 1px solid #e4dfd5;
+  border-radius: 8px;
+  background: #fbfaf6;
+  box-shadow: 0 1px 2px rgb(37 31 21 / 3%);
+}
+
+@media (max-width: 760px) {
+  .statsGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 9px;
+  }
+
+  .statCard {
+    min-height: 98px;
+  }
+}
+
+@media (max-width: 420px) {
+  .statCard {
+    padding: 12px 10px;
+  }
+}
