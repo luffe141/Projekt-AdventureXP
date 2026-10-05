@@ -30,14 +30,7 @@ public class CustomerController
     @GetMapping("/{id}")
     public ResponseEntity<Customer> getCustomerById(@PathVariable int id)
     {
-        try
-        {
-            return ResponseEntity.ok(service.getCustomerById(id));
-        }
-        catch (RuntimeException e)
-        {
-            return ResponseEntity.notFound().build();
-        }
+        return ResponseEntity.ok(service.getCustomerById(id));
     }
 
     @PostMapping

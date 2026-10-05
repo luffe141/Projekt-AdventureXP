@@ -31,29 +31,15 @@ public class ReservationController
    @GetMapping("/{id}")
     public ResponseEntity<Reservation> getReservationById(@PathVariable int id)
     {
-        try
-        {
-            return ResponseEntity.ok(service.getReservationById(id));
-        }
-        catch (RuntimeException e)
-        {
-            return ResponseEntity.notFound().build();
-        }
+        return ResponseEntity.ok(service.getReservationById(id));
     }
 
     @PostMapping
     public ResponseEntity<Void> createReservation(@RequestBody CreateReservationRequest request)
     {
-        try
-        {
-            service.createReservation(request);
+        service.createReservation(request);
 
-            return ResponseEntity.status(HttpStatus.CREATED).build();
-        }
-        catch (RuntimeException e)
-        {
-            return ResponseEntity.badRequest().build();
-        }
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
 

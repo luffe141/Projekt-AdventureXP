@@ -28,7 +28,7 @@ public class ActivityService
 
         if (activity.isEmpty())
         {
-            throw new RuntimeException();
+            throw new RuntimeException("Could not find activity with id " + id);
         }
 
         return activity.get();
