@@ -1,0 +1,45 @@
+.adminPage {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 182px minmax(0, 1fr);
+  background: #f0ede5;
+  color: #17191b;
+}
+
+.dashboard {
+  min-width: 0;
+  padding: 18px 20px 28px;
+}
+
+.dashboardGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.95fr) minmax(280px, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+
+@media (max-width: 1050px) {
+  .dashboardGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .adminPage {
+    grid-template-columns: 56px minmax(0, 1fr);
+  }
+
+  .dashboard {
+    padding: 12px;
+  }
+}
+
+@media (max-width: 420px) {
+  .adminPage {
+    grid-template-columns: 38px minmax(0, 1fr);
+  }
+
+  .dashboard {
+    padding: 9px;
+  }
+}

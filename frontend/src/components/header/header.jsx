@@ -1,4 +1,5 @@
 import logo from "../../assets/logo.png";
+import { Link } from "react-router-dom";
 
 function Header() {
   return (
@@ -10,7 +11,7 @@ function Header() {
         <a href="#aktiviteter">Aktiviteter</a>
         <a href="#firmabooking">Firmaevents</a>
         <a href="#booking">Praktisk info</a>
-        <a href="#booking">Medarbejder</a>
+        <Link to="/admin">Medarbejder</Link>
       </nav>
       <a className="header-book" href="#booking">
         Book oplevelse <span>→</span>
