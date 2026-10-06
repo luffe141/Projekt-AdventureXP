@@ -39,7 +39,7 @@ public class ReservationService
 
         if (reservation.isEmpty())
         {
-            throw new RuntimeException();
+            throw new RuntimeException("Reservation not found");
         }
 
         return reservation.get();
@@ -63,7 +63,7 @@ public class ReservationService
         reservation.setCustomer(customer);
 
         Activity activity = activityRepo.findById(request.activityId())
-                        .orElseThrow(() -> new RuntimeException());
+                        .orElseThrow(() -> new RuntimeException("Activity not found"));
 
 
         reservation.setActivity(activity);
@@ -81,7 +81,7 @@ public class ReservationService
 
         if (reservationOptional.isEmpty())
         {
-            throw new RuntimeException();
+            throw new RuntimeException("Reservation not found");
         }
 
         Reservation reservation = reservationOptional.get();
@@ -99,7 +99,7 @@ public class ReservationService
 
         if (reservationOptional.isEmpty())
         {
-            throw new RuntimeException();
+            throw new RuntimeException("Reservation not found");
         }
 
         repository.delete(reservationOptional.get());

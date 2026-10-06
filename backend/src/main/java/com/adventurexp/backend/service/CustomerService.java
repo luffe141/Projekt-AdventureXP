@@ -3,6 +3,9 @@ package com.adventurexp.backend.service;
 import com.adventurexp.backend.model.Activity;
 import com.adventurexp.backend.model.Customer;
 import com.adventurexp.backend.repository.CustomerRepo;
+import com.adventurexp.backend.validation.EmailValidation;
+import com.adventurexp.backend.validation.NameValidation;
+import com.adventurexp.backend.validation.PhoneNumberValidation;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,7 +32,7 @@ public class CustomerService
 
         if(customer.isEmpty())
         {
-            throw new RuntimeException();
+            throw new RuntimeException("Customer with id " + id + " not found");
         }
 
         return customer.get();
@@ -37,6 +40,21 @@ public class CustomerService
 
     public Customer createCustomer(Customer customer)
     {
+        if (!EmailValidation.isEmailValid(customer.getEmail()))
+        {
+            throw new RuntimeException("Email is not valid");
+        }
+
+        if (!NameValidation.isNameValid(customer.getName()))
+        {
+            throw new RuntimeException("Name is not valid");
+        }
+
+        if (!PhoneNumberValidation.isPhoneNumberValid(customer.getPhone()))
+        {
+            throw new RuntimeException("Phone number is not valid");
+        }
+
         return repository.save(customer);
     }
 
@@ -46,7 +64,7 @@ public class CustomerService
 
         if (customerOptional.isEmpty())
         {
-            throw new RuntimeException();
+            throw new RuntimeException("Customer with id " + id + " not found");
         }
 
         Customer customer = customerOptional.get();

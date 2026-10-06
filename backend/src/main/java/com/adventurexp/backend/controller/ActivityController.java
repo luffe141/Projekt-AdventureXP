@@ -30,16 +30,7 @@ public class ActivityController
     @GetMapping("/{id}")
     public ResponseEntity<Activity> getActivityById(@PathVariable int id)
     {
-        try
-        {
-            Activity activity = service.getActivityById(id);
-
-            return ResponseEntity.ok(activity);
-        }
-        catch (RuntimeException e)
-        {
-            return ResponseEntity.notFound().build();
-        }
+        return ResponseEntity.ok(service.getActivityById(id));
     }
 
 
