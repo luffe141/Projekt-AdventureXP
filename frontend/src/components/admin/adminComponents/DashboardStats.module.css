@@ -6,12 +6,43 @@
 }
 
 .statCard {
+  min-width: 0;
   min-height: 108px;
   padding: 15px 14px 12px;
   border: 1px solid #e4dfd5;
   border-radius: 8px;
   background: #fbfaf6;
   box-shadow: 0 1px 2px rgb(37 31 21 / 3%);
+}
+
+.statTitle {
+  margin: 0 0 4px;
+  color: #77736a;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.statValue {
+  margin: 0;
+  color: #171719;
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 38px;
+  font-weight: 800;
+  line-height: 0.95;
+}
+
+.statNote {
+  margin: 7px 0 0;
+  color: #77736a;
+  font-size: 9px;
+  line-height: 1.35;
+}
+
+.positiveNote {
+  color: #00a98f;
+  font-weight: 700;
 }
 
 @media (max-width: 760px) {
@@ -22,6 +53,10 @@
 
   .statCard {
     min-height: 98px;
+  }
+
+  .statValue {
+    font-size: 34px;
   }
 }
 
