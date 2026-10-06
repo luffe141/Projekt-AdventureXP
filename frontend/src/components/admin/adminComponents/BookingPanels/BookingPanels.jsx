@@ -9,7 +9,14 @@ const activityColors = {
   gokart: { color: "#ff5a3c", tint: "#fde5df" },
   minigolf: { color: "#1ab4a5", tint: "#dff6f3" },
   paintball: { color: "#f39b4d", tint: "#fdf0df" },
-  sumo: { color: "#e96d6d", tint: "#fbe6e6" },
+  sumo: { color: "#b39ddb", tint: "#efe7ff" },
+};
+
+const defaultCapacityByActivity = {
+  gokart: 12,
+  minigolf: 18,
+  paintball: 14,
+  sumo: 4,
 };
 
 function normalizeActivityName(name = "") {
@@ -37,6 +44,17 @@ function formatTime(time) {
   return value;
 }
 
+function formatActivityName(activityName) {
+  const normalized = normalizeActivityName(activityName);
+
+  if (normalized === "gokart") return "Gokart";
+  if (normalized === "minigolf") return "Minigolf";
+  if (normalized === "paintball") return "Paintball";
+  if (normalized === "sumo") return "Sumobrydning";
+
+  return activityName || "Ukendt";
+}
+
 function makeBookingColor(activityName) {
   const normalized = normalizeActivityName(activityName);
   return activityColors[normalized] || { color: "#ff5a3c", tint: "#fde5df" };
@@ -44,6 +62,7 @@ function makeBookingColor(activityName) {
 
 function BookingPanels() {
   const [reservations, setReservations] = useState([]);
+  const [activities, setActivities] = useState([]);
 
   useEffect(() => {
     fetch(`${API_URL}/api/reservations`)
@@ -68,6 +87,15 @@ function BookingPanels() {
       .catch(() => setReservations([]));
   }, []);
 
+  useEffect(() => {
+    fetch(`${API_URL}/api/activities`)
+      .then((response) => response.json())
+      .then((data) => {
+        setActivities(Array.isArray(data) ? data : []);
+      })
+      .catch(() => setActivities([]));
+  }, []);
+
   const upcomingBookings = useMemo(() => {
     return reservations.slice(0, 5).map((reservation) => {
       const activityName = reservation.activity?.name || "Ukendt aktivitet";
@@ -83,6 +111,40 @@ function BookingPanels() {
       };
     });
   }, [reservations]);
+
+  const equipmentStatus = useMemo(() => {
+    const list = activities.length ? activities : [
+      { name: "GoKart" },
+      { name: "Paintball" },
+      { name: "Sumo Wrestling" },
+      { name: "Minigolf" },
+    ];
+
+    return list.map((activity) => {
+      const activityName = activity.name || "Ukendt";
+      const displayName = formatActivityName(activityName);
+      const normalized = normalizeActivityName(activityName);
+      const capacity = defaultCapacityByActivity[normalized] || 12;
+      const booked = reservations
+        .filter((reservation) => {
+          const reservationName = reservation.activity?.name || "";
+          return normalizeActivityName(reservationName) === normalized;
+        })
+        .reduce((sum, reservation) => sum + Number(reservation.numberOfPeople || 0), 0);
+
+      const isReady = booked >= capacity;
+
+      return {
+        id: activity.activityId || activityName,
+        name: displayName,
+        booked,
+        capacity,
+        status: isReady ? "Klar" : "Ledig",
+        color: makeBookingColor(activityName).color,
+        tint: makeBookingColor(activityName).tint,
+      };
+    });
+  }, [activities, reservations]);
 
   return (
     <div className={styles.sidePanels}>
@@ -115,6 +177,27 @@ function BookingPanels() {
         )}
       </section>
 
+      <section className={`${styles.panel} ${styles.smallPanel}`}>
+        <h3 className={styles.smallPanelTitle}>Udstyrsstatus</h3>
+
+        <div className={styles.statusList}>
+          {equipmentStatus.map((item) => (
+            <div key={item.id} className={styles.statusRow}>
+              <span className={styles.statusName}>{item.name}</span>
+              <span
+                className={styles.statusBadge}
+                style={{
+                  background: item.tint,
+                  color: item.color,
+                  borderColor: `${item.color}66`,
+                }}
+              >
+                {item.booked}/{item.capacity} {item.status}
+              </span>
+            </div>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }
