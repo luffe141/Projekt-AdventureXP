@@ -42,8 +42,12 @@
   border-bottom: 0;
 }
 
+.bookingContent {
+  min-width: 0;
+}
+
 .bookingTime {
-  color: var(--activity-color);
+  color: #252321;
   font-family: "Barlow Condensed", sans-serif;
   font-size: 12px;
   font-weight: 800;
@@ -53,6 +57,9 @@
   margin: 0;
   font-size: 9px;
   font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .bookingMeta {
@@ -64,17 +71,16 @@
 .bookingDot {
   width: 7px;
   height: 7px;
-  flex: 0 0 auto;
   border-radius: 2px;
-  background: var(--activity-color);
+  background: #ff5a3c;
 }
 
-.equipmentList {
+.dateList {
   display: grid;
   gap: 10px;
 }
 
-.equipmentRow {
+.dateRow {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -83,14 +89,31 @@
   font-size: 9px;
 }
 
-.equipmentBadge {
+.dateName {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dateBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
   padding: 4px 6px;
+  border: 1px solid transparent;
   border-radius: 4px;
-  background: var(--activity-tint);
-  color: var(--activity-color);
   font-size: 7px;
   font-weight: 700;
+  letter-spacing: 0.06em;
   white-space: nowrap;
+}
+
+.emptyState {
+  margin: 0;
+  color: #77736a;
+  font-size: 8px;
+  line-height: 1.5;
 }
 
 @media (max-width: 1050px) {
