@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import styles from "./BookingModal.module.css";
 
 const activityOptions = ["Gokart", "Paintball", "Minigolf", "Sumobrydning"];
-const API_URL = import.meta.env.VITE_API_BASE_URL.replace(/\/+$/, "");
+const API_URL = import.meta.env.VITE_API_BASE_URL;
 
 function normalizeActivityName(name) {
   return name

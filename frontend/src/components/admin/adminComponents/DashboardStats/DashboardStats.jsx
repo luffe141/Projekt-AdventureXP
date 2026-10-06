@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import styles from "./DashboardStats.module.css";
 
-const API_URL = import.meta.env.VITE_API_BASE_URL.replace(/\/+$/, "");
+const API_URL = import.meta.env.VITE_API_BASE_URL;
 
 function DashboardStats() {
   const [dashboard, setDashboard] = useState(null);
