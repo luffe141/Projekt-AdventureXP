@@ -9,7 +9,7 @@ const activityColors = {
   gokart: { color: "#ff5a3c", tint: "#fde5df" },
   minigolf: { color: "#1ab4a5", tint: "#dff6f3" },
   paintball: { color: "#f39b4d", tint: "#fdf0df" },
-  sumo: { color: "#e96d6d", tint: "#fbe6e6" },
+  sumo: { color: "#b39ddb", tint: "#efe7ff" },
 };
 
 function normalizeActivityName(name = "") {
