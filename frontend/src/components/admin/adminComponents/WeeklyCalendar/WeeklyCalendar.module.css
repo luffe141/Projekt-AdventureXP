@@ -64,7 +64,7 @@
   height: 7px;
   flex: 0 0 auto;
   border-radius: 2px;
-  background: var(--activity-color);
+  background: #ff5a3c;
 }
 
 .calendarButton {
@@ -126,9 +126,9 @@
 
 .event {
   padding: 6px 6px 5px;
-  border-left: 2px solid var(--activity-color);
+  border-left: 2px solid #ff5a3c;
   border-radius: 4px;
-  background: var(--activity-tint);
+  background: #fde5df;
 }
 
 .eventName,
