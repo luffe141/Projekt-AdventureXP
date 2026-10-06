@@ -37,16 +37,6 @@ function formatTime(time) {
   return value;
 }
 
-function formatDateLabel(dateString) {
-  if (!dateString) return "--/--";
-
-  const date = new Date(`${dateString}T00:00:00`);
-  return date.toLocaleDateString("da-DK", {
-    day: "2-digit",
-    month: "2-digit",
-  });
-}
-
 function makeBookingColor(activityName) {
   const normalized = normalizeActivityName(activityName);
   return activityColors[normalized] || { color: "#ff5a3c", tint: "#fde5df" };
@@ -87,7 +77,6 @@ function BookingPanels() {
         id: reservation.reservationId,
         activityName,
         customerName: reservation.customer?.name || "Kunde",
-        date: reservation.date,
         time: formatTime(reservation.startTime),
         people: reservation.numberOfPeople,
         color: palette.color,
@@ -126,31 +115,6 @@ function BookingPanels() {
         )}
       </section>
 
-      <section className={`${styles.panel} ${styles.smallPanel}`}>
-        <h3 className={styles.smallPanelTitle}>Fremtidige datoer</h3>
-
-        <div className={styles.dateList}>
-          {upcomingBookings.length === 0 ? (
-            <p className={styles.emptyState}>Ingen datoer i fremtiden.</p>
-          ) : (
-            upcomingBookings.map((booking) => (
-              <div key={`date-${booking.id}`} className={styles.dateRow}>
-                <span className={styles.dateName}>{booking.activityName}</span>
-                <span
-                  className={styles.dateBadge}
-                  style={{
-                    background: `${booking.color}22`,
-                    color: booking.color,
-                    borderColor: `${booking.color}66`,
-                  }}
-                >
-                  {formatDateLabel(booking.date)}
-                </span>
-              </div>
-            ))
-          )}
-        </div>
-      </section>
     </div>
   );
 }
