@@ -1,8 +1,8 @@
 import styles from "./Admin.module.css";
-import AdminSidebar from "./adminComponents/AdminSidebar";
-import DashboardStats from "./adminComponents/DashboardStats";
-import WeeklyCalendar from "./adminComponents/WeeklyCalendar";
-import BookingPanels from "./adminComponents/BookingPanels";
+import AdminSidebar from "./adminComponents/AdminSidebar/AdminSidebar";
+import DashboardStats from "./adminComponents/DashboardStats/DashboardStats";
+import WeeklyCalendar from "./adminComponents/WeeklyCalendar/WeeklyCalendar";
+import BookingPanels from "./adminComponents/BookingPanels/BookingPanels";
 
 function Admin() {
   return (
