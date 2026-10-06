@@ -75,40 +75,6 @@
   background: #ff5a3c;
 }
 
-.dateList {
-  display: grid;
-  gap: 10px;
-}
-
-.dateRow {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  color: #4f4c47;
-  font-size: 9px;
-}
-
-.dateName {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.dateBadge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 44px;
-  padding: 4px 6px;
-  border: 1px solid transparent;
-  border-radius: 4px;
-  font-size: 7px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  white-space: nowrap;
-}
-
 .emptyState {
   margin: 0;
   color: #77736a;
