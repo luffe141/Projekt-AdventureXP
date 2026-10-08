@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { alertBackendException } from "../../../../utils/backendExceptionAlert";
 import styles from "./WeeklyCalendar.module.css";
 
 const API_URL =
@@ -91,7 +92,14 @@ function WeeklyCalendar() {
 
   useEffect(() => {
     fetch(`${API_URL}/api/reservations`)
-      .then((response) => response.json())
+      .then(async (response) => {
+        if (!response.ok) {
+          await alertBackendException(response);
+          throw new Error("Kunne ikke hente reservationer");
+        }
+
+        return response.json();
+      })
       .then((data) => {
         if (!Array.isArray(data)) {
           setReservations([]);

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { alertBackendException } from "../../../../utils/backendExceptionAlert";
 import styles from "./DashboardStats.module.css";
 
 const API_URL = import.meta.env.VITE_API_BASE_URL;
@@ -8,8 +9,16 @@ function DashboardStats() {
 
   useEffect(() => {
     fetch(`${API_URL}/api/reservations`)
-      .then((response) => response.json())
-      .then((reservations) => setDashboard(reservations));
+      .then(async (response) => {
+        if (!response.ok) {
+          await alertBackendException(response);
+          throw new Error("Kunne ikke hente reservationer");
+        }
+
+        return response.json();
+      })
+      .then((reservations) => setDashboard(reservations))
+      .catch(() => setDashboard(null));
   }, []);
 
   const difference = dashboard?.bookingDifference ?? 0;

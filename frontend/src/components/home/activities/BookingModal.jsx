@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { alertBackendException } from "../../../utils/backendExceptionAlert";
 import styles from "./BookingModal.module.css";
 
 const activityOptions = ["Gokart", "Paintball", "Minigolf", "Sumobrydning"];
@@ -26,8 +27,16 @@ function BookingModal({ activity, onClose }) {
 
   useEffect(() => {
     fetch(`${API_URL}/api/activities`)
-      .then((response) => response.json())
-      .then(setActivities);
+      .then(async (response) => {
+        if (!response.ok) {
+          await alertBackendException(response);
+          throw new Error("Kunne ikke hente aktiviteter");
+        }
+
+        return response.json();
+      })
+      .then(setActivities)
+      .catch(() => setActivities([]));
   }, []);
 
   useEffect(() => {
@@ -52,21 +61,30 @@ function BookingModal({ activity, onClose }) {
         normalizeActivityName(selectedActivity),
     );
 
-    const response = await fetch(`${API_URL}/api/reservations`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name: formData.get("name"),
-        email: formData.get("email"),
-        phone: formData.get("phone"),
-        activityId: selected.activityId,
-        date: formData.get("date"),
-        time: formData.get("time"),
-        numberOfPeople: Number(formData.get("people")),
-      }),
-    });
+    try {
+      const response = await fetch(`${API_URL}/api/reservations`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formData.get("name"),
+          email: formData.get("email"),
+          phone: formData.get("phone"),
+          activityId: selected.activityId,
+          date: formData.get("date"),
+          time: formData.get("time"),
+          numberOfPeople: Number(formData.get("people")),
+        }),
+      });
 
-    if (response.ok) setSubmitted(true);
+      if (!response.ok) {
+        await alertBackendException(response);
+        return;
+      }
+
+      setSubmitted(true);
+    } catch {
+      // Network errors have no backend exception message to display.
+    }
   }
 
   return (
