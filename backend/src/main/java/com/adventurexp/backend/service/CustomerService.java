@@ -75,4 +75,16 @@ public class CustomerService
 
         repository.save(customer);
     }
+
+    public void deleteCustomer(int id)
+    {
+        Optional<Customer> customerOptional = repository.findById(id);
+
+        if (customerOptional.isEmpty())
+        {
+            throw new RuntimeException("Customer with id " + id + " not found");
+        }
+
+        repository.delete(customerOptional.get());
+    }
 }
