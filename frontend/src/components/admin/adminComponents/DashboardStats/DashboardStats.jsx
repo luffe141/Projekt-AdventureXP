@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
+import { API_URL } from "../../../../utils/api";
 import { alertBackendException } from "../../../../utils/backendExceptionAlert";
 import styles from "./DashboardStats.module.css";
-
-const API_URL = import.meta.env.VITE_API_BASE_URL;
 
 function DashboardStats() {
   const [dashboard, setDashboard] = useState(null);

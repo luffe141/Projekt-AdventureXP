@@ -1,10 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
+import { API_URL } from "../../../../utils/api";
 import { alertBackendException } from "../../../../utils/backendExceptionAlert";
 import styles from "./BookingPanels.module.css";
-
-const API_URL =
-  import.meta.env.VITE_API_BASE_URL ||
-  "https://adventurexp-dyg7gcfbbackhphq.spaincentral-01.azurewebsites.net/";
 
 const activityColors = {
   gokart: { color: "#ff5a3c", tint: "#fde5df" },
