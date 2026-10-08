@@ -61,6 +61,34 @@ function makeBookingColor(activityName) {
 function BookingPanels() {
   const [reservations, setReservations] = useState([]);
   const [activities, setActivities] = useState([]);
+  const [deletingReservationId, setDeletingReservationId] = useState(null);
+
+  async function deleteReservation(reservationId) {
+    if (!window.confirm("Vil du slette denne booking?")) return;
+
+    setDeletingReservationId(reservationId);
+    try {
+      const response = await fetch(
+        `${API_URL}/api/reservations/${reservationId}`,
+        { method: "DELETE" },
+      );
+
+      if (!response.ok) {
+        await alertBackendException(response);
+        return;
+      }
+
+      setReservations((current) =>
+        current.filter(
+          (reservation) => reservation.reservationId !== reservationId,
+        ),
+      );
+    } catch {
+      // A network failure has no backend exception response to display.
+    } finally {
+      setDeletingReservationId(null);
+    }
+  }
 
   useEffect(() => {
     fetch(`${API_URL}/api/reservations`)
@@ -186,11 +214,18 @@ function BookingPanels() {
                   </p>
                   <p className={styles.bookingMeta}>{booking.customerName}</p>
                 </div>
-                <span
-                  className={styles.bookingDot}
-                  style={{ background: booking.color }}
-                  aria-label={booking.activityName}
-                />
+                <button
+                  className={styles.deleteBookingButton}
+                  type="button"
+                  onClick={() => deleteReservation(booking.id)}
+                  disabled={deletingReservationId === booking.id}
+                  aria-label={`Slet booking: ${booking.activityName} med ${booking.customerName}`}
+                  title="Slet booking"
+                >
+                  <svg aria-hidden="true" viewBox="0 0 16 16" focusable="false">
+                    <path d="M5.5 2.5h5m-7 2h9m-8 0 .5 8h5l.5-8M6.5 6.5v4m3-4v4M6 2.5l.5-1h3l.5 1" />
+                  </svg>
+                </button>
               </div>
             ))}
           </div>
