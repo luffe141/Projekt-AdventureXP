@@ -31,7 +31,7 @@
 
 .bookingRow {
   display: grid;
-  grid-template-columns: 34px minmax(0, 1fr) 8px;
+  grid-template-columns: 34px minmax(0, 1fr) 24px;
   gap: 8px;
   align-items: center;
   min-height: 47px;
@@ -68,11 +68,45 @@
   font-size: 8px;
 }
 
-.bookingDot {
-  width: 7px;
-  height: 7px;
-  border-radius: 2px;
-  background: #ff5a3c;
+.deleteBookingButton {
+  display: grid;
+  width: 24px;
+  height: 28px;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  color: #918b80;
+  background: transparent;
+  cursor: pointer;
+  transition:
+    color 150ms ease,
+    background-color 150ms ease;
+}
+
+.deleteBookingButton:hover:not(:disabled) {
+  color: #c0392b;
+  background: #fbe9e6;
+}
+
+.deleteBookingButton:focus-visible {
+  outline: 2px solid #c0392b;
+  outline-offset: 1px;
+}
+
+.deleteBookingButton:disabled {
+  cursor: wait;
+  opacity: 0.5;
+}
+
+.deleteBookingButton svg {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.4;
 }
 
 .statusList {
