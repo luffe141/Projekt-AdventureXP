@@ -70,6 +70,10 @@ public class ReservationService
 
         reservation.setStartTime(request.time());
         reservation.setDate(request.date());
+        if (request.numberOfPeople() < 1)
+        {
+            throw new RuntimeException("Number of people should be greater than 0");
+        }
         reservation.setNumberOfPeople(request.numberOfPeople());
 
         repository.save(reservation);
