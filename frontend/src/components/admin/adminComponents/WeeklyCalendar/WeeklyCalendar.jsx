@@ -78,7 +78,9 @@ function mapReservationToEvent(reservation) {
   const time = String(reservation.startTime || "00:00").replace(/:00$/, "");
 
   return {
-    id: reservation.reservationId ?? `${reservation.date}-${reservation.startTime}`,
+    id:
+      reservation.reservationId ??
+      `${reservation.date}-${reservation.startTime}`,
     name: activityName,
     detail: `${time} - ${reservation.numberOfPeople || 0} pers.`,
     ...palette,
@@ -121,7 +123,10 @@ function WeeklyCalendar() {
   const todayIndex = weekDays.findIndex((day) => day.date === todayKey);
 
   return (
-    <section className={`${styles.panel} ${styles.calendarPanel}`} aria-label="Ugekalender">
+    <section
+      className={`${styles.panel} ${styles.calendarPanel}`}
+      aria-label="Ugekalender"
+    >
       <header className={styles.panelHeader}>
         <h2 className={styles.panelTitle}>
           Ugekalender
@@ -160,10 +165,18 @@ function WeeklyCalendar() {
             </span>
           </div>
 
-          <button className={styles.calendarButton} type="button" aria-label="Forrige uge">
+          <button
+            className={styles.calendarButton}
+            type="button"
+            aria-label="Forrige uge"
+          >
             ‹
           </button>
-          <button className={styles.calendarButton} type="button" aria-label="Næste uge">
+          <button
+            className={styles.calendarButton}
+            type="button"
+            aria-label="Næste uge"
+          >
             ›
           </button>
         </div>

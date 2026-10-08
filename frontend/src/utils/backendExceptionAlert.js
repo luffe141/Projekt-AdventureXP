@@ -8,7 +8,10 @@ export async function alertBackendException(response) {
     return;
   }
 
-  if (typeof errorResponse?.message === "string" && errorResponse.message.trim()) {
+  if (
+    typeof errorResponse?.message === "string" &&
+    errorResponse.message.trim()
+  ) {
     window.alert(errorResponse.message);
   }
 }
