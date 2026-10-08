@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { alertBackendException } from "../../../../utils/backendExceptionAlert";
 import styles from "./BookingPanels.module.css";
 
 const API_URL =
@@ -66,7 +67,14 @@ function BookingPanels() {
 
   useEffect(() => {
     fetch(`${API_URL}/api/reservations`)
-      .then((response) => response.json())
+      .then(async (response) => {
+        if (!response.ok) {
+          await alertBackendException(response);
+          throw new Error("Kunne ikke hente reservationer");
+        }
+
+        return response.json();
+      })
       .then((data) => {
         if (!Array.isArray(data)) {
           setReservations([]);
@@ -89,7 +97,14 @@ function BookingPanels() {
 
   useEffect(() => {
     fetch(`${API_URL}/api/activities`)
-      .then((response) => response.json())
+      .then(async (response) => {
+        if (!response.ok) {
+          await alertBackendException(response);
+          throw new Error("Kunne ikke hente aktiviteter");
+        }
+
+        return response.json();
+      })
       .then((data) => {
         setActivities(Array.isArray(data) ? data : []);
       })
@@ -113,12 +128,14 @@ function BookingPanels() {
   }, [reservations]);
 
   const equipmentStatus = useMemo(() => {
-    const list = activities.length ? activities : [
-      { name: "GoKart" },
-      { name: "Paintball" },
-      { name: "Sumo Wrestling" },
-      { name: "Minigolf" },
-    ];
+    const list = activities.length
+      ? activities
+      : [
+          { name: "GoKart" },
+          { name: "Paintball" },
+          { name: "Sumo Wrestling" },
+          { name: "Minigolf" },
+        ];
 
     return list.map((activity) => {
       const activityName = activity.name || "Ukendt";
@@ -130,7 +147,10 @@ function BookingPanels() {
           const reservationName = reservation.activity?.name || "";
           return normalizeActivityName(reservationName) === normalized;
         })
-        .reduce((sum, reservation) => sum + Number(reservation.numberOfPeople || 0), 0);
+        .reduce(
+          (sum, reservation) => sum + Number(reservation.numberOfPeople || 0),
+          0,
+        );
 
       const isReady = booked >= capacity;
 
@@ -157,7 +177,10 @@ function BookingPanels() {
           <div className={styles.bookingList}>
             {upcomingBookings.map((booking) => (
               <div key={booking.id} className={styles.bookingRow}>
-                <div className={styles.bookingTime} style={{ color: booking.color }}>
+                <div
+                  className={styles.bookingTime}
+                  style={{ color: booking.color }}
+                >
                   {booking.time}
                 </div>
                 <div className={styles.bookingContent}>
