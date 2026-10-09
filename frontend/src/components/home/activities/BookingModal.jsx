@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
+import { API_URL } from "../../../utils/api";
 import { alertBackendException } from "../../../utils/backendExceptionAlert";
 import styles from "./BookingModal.module.css";
 
 const activityOptions = ["Gokart", "Paintball", "Minigolf", "Sumobrydning"];
-const API_URL = import.meta.env.VITE_API_BASE_URL;
 
 function normalizeActivityName(name) {
   return name
@@ -24,6 +24,7 @@ function BookingModal({ activity, onClose }) {
   const [selectedActivity, setSelectedActivity] = useState(activity);
   const [activities, setActivities] = useState([]);
   const [submitted, setSubmitted] = useState(false);
+  const [activitiesError, setActivitiesError] = useState(false);
 
   useEffect(() => {
     fetch(`${API_URL}/api/activities`)
@@ -36,7 +37,10 @@ function BookingModal({ activity, onClose }) {
         return response.json();
       })
       .then(setActivities)
-      .catch(() => setActivities([]));
+      .catch(() => {
+        setActivities([]);
+        setActivitiesError(true);
+      });
   }, []);
 
   useEffect(() => {
@@ -61,6 +65,11 @@ function BookingModal({ activity, onClose }) {
         normalizeActivityName(selectedActivity),
     );
 
+    if (!selected) {
+      window.alert("Aktiviteten kunne ikke findes. Prøv at genindlæse siden.");
+      return;
+    }
+
     try {
       const response = await fetch(`${API_URL}/api/reservations`, {
         method: "POST",
@@ -83,7 +92,9 @@ function BookingModal({ activity, onClose }) {
 
       setSubmitted(true);
     } catch {
-      // Network errors have no backend exception message to display.
+      window.alert(
+        "Forespørgslen kunne ikke sendes. Kontrollér din internetforbindelse, og prøv igen.",
+      );
     }
   }
 
@@ -209,6 +220,12 @@ function BookingModal({ activity, onClose }) {
               <span aria-hidden="true">✓</span>
               Vi bekræfter tidspunktet hurtigst muligt.
             </p>
+            {activitiesError && (
+              <p role="alert">
+                Aktiviteterne kunne ikke indlæses. Kontrollér forbindelsen, og
+                genindlæs siden.
+              </p>
+            )}
 
             <div className={styles.actions}>
               <button
