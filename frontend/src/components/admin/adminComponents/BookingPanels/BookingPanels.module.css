@@ -187,12 +187,31 @@
   background: rgb(26 21 17 / 32%);
 }
 
+.confirmModal,
 .editModal {
   width: min(540px, 100%);
   border: 1px solid #e4dfd5;
   border-radius: 12px;
   background: #fffdf9;
   box-shadow: 0 20px 45px rgb(41 30 19 / 18%);
+}
+
+.confirmModal {
+  max-width: 420px;
+  padding: 22px 20px;
+}
+
+.confirmModal h3 {
+  margin: 0 0 8px;
+  color: #1f1d1a;
+  font-size: 20px;
+}
+
+.confirmModal p {
+  margin: 0 0 18px;
+  color: #544f49;
+  font-size: 12px;
+  line-height: 1.5;
 }
 
 .editModalHeader {
@@ -270,7 +289,8 @@
 }
 
 .cancelButton,
-.submitButton {
+.submitButton,
+.deleteConfirmButton {
   min-height: 36px;
   padding: 0 14px;
   border: 1px solid transparent;
@@ -286,9 +306,14 @@
   background: #f6f1ea;
 }
 
-.submitButton {
+.submitButton,
+.deleteConfirmButton {
   color: #fff;
   background: linear-gradient(135deg, #7b63d6, #8a7ae8);
+}
+
+.deleteConfirmButton {
+  background: linear-gradient(135deg, #d9534f, #c0392b);
 }
 
 @media (max-width: 1050px) {
