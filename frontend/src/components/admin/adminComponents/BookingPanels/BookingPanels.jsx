@@ -17,6 +17,13 @@ const defaultCapacityByActivity = {
   sumo: 4,
 };
 
+const editActivityOptions = [
+  "Gokart",
+  "Minigolf",
+  "Paintball",
+  "Sumobrydning",
+];
+
 function normalizeActivityName(name = "") {
   return name
     .toLowerCase()
@@ -62,6 +69,8 @@ function BookingPanels() {
   const [reservations, setReservations] = useState([]);
   const [activities, setActivities] = useState([]);
   const [deletingReservationId, setDeletingReservationId] = useState(null);
+  const [editingReservationId, setEditingReservationId] = useState(null);
+  const [editingDraft, setEditingDraft] = useState(null);
 
   async function deleteReservation(reservationId) {
     if (!window.confirm("Vil du slette denne booking?")) return;
@@ -191,6 +200,68 @@ function BookingPanels() {
     });
   }, [activities, reservations]);
 
+  function openEditReservation(booking) {
+    const reservation = reservations.find((item) => item.reservationId === booking.id);
+    if (!reservation) return;
+
+    setEditingReservationId(booking.id);
+    setEditingDraft({
+      name: reservation.customer?.name || "",
+      email: reservation.customer?.email || "",
+      phone: reservation.customer?.phone || "",
+      activity: formatActivityName(reservation.activity?.name || booking.activityName),
+      people: String(reservation.numberOfPeople || booking.people),
+      date: reservation.date || "",
+      time: formatTime(reservation.startTime || booking.time || "00:00"),
+    });
+  }
+
+  function updateDraftField(field, value) {
+    setEditingDraft((current) => ({ ...current, [field]: value }));
+  }
+
+  function saveEditedReservation(event) {
+    event.preventDefault();
+    if (!editingReservationId || !editingDraft) return;
+
+    setReservations((current) =>
+      current.map((reservation) => {
+        if (reservation.reservationId !== editingReservationId) {
+          return reservation;
+        }
+
+        const nextActivityName = editingDraft.activity;
+        const selectedActivity = activities.find(
+          (activity) =>
+            normalizeActivityName(activity.name) ===
+            normalizeActivityName(nextActivityName),
+        );
+
+        return {
+          ...reservation,
+          customer: {
+            ...reservation.customer,
+            name: editingDraft.name,
+            email: editingDraft.email,
+            phone: editingDraft.phone,
+          },
+          activity: {
+            ...reservation.activity,
+            name: nextActivityName,
+            activityId:
+              selectedActivity?.activityId ?? reservation.activity?.activityId,
+          },
+          numberOfPeople: Number(editingDraft.people || 0),
+          date: editingDraft.date,
+          startTime: editingDraft.time,
+        };
+      }),
+    );
+
+    setEditingReservationId(null);
+    setEditingDraft(null);
+  }
+
   return (
     <div className={styles.sidePanels}>
       <section className={`${styles.panel} ${styles.smallPanel}`}>
@@ -214,18 +285,29 @@ function BookingPanels() {
                   </p>
                   <p className={styles.bookingMeta}>{booking.customerName}</p>
                 </div>
-                <button
-                  className={styles.deleteBookingButton}
-                  type="button"
-                  onClick={() => deleteReservation(booking.id)}
-                  disabled={deletingReservationId === booking.id}
-                  aria-label={`Slet booking: ${booking.activityName} med ${booking.customerName}`}
-                  title="Slet booking"
-                >
-                  <svg aria-hidden="true" viewBox="0 0 16 16" focusable="false">
-                    <path d="M5.5 2.5h5m-7 2h9m-8 0 .5 8h5l.5-8M6.5 6.5v4m3-4v4M6 2.5l.5-1h3l.5 1" />
-                  </svg>
-                </button>
+                <div className={styles.bookingActions}>
+                  <button
+                    className={styles.editBookingButton}
+                    type="button"
+                    onClick={() => openEditReservation(booking)}
+                    aria-label={`Rediger booking: ${booking.activityName} med ${booking.customerName}`}
+                    title="Rediger booking"
+                  >
+                    Rediger
+                  </button>
+                  <button
+                    className={styles.deleteBookingButton}
+                    type="button"
+                    onClick={() => deleteReservation(booking.id)}
+                    disabled={deletingReservationId === booking.id}
+                    aria-label={`Slet booking: ${booking.activityName} med ${booking.customerName}`}
+                    title="Slet booking"
+                  >
+                    <svg aria-hidden="true" viewBox="0 0 16 16" focusable="false">
+                      <path d="M5.5 2.5h5m-7 2h9m-8 0 .5 8h5l.5-8M6.5 6.5v4m3-4v4M6 2.5l.5-1h3l.5 1" />
+                    </svg>
+                  </button>
+                </div>
               </div>
             ))}
           </div>
@@ -253,6 +335,131 @@ function BookingPanels() {
           ))}
         </div>
       </section>
+
+      {editingDraft && (
+        <div
+          className={styles.modalBackdrop}
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) {
+              setEditingReservationId(null);
+              setEditingDraft(null);
+            }
+          }}
+        >
+          <section className={styles.editModal} role="dialog" aria-modal="true">
+            <div className={styles.editModalHeader}>
+              <div>
+                <p className={styles.editEyebrow}>Rediger reservation</p>
+                <h3>Rediger kunde / ordre</h3>
+              </div>
+              <button
+                type="button"
+                className={styles.closeButton}
+                onClick={() => {
+                  setEditingReservationId(null);
+                  setEditingDraft(null);
+                }}
+                aria-label="Luk redigering"
+              >
+                ×
+              </button>
+            </div>
+
+            <form className={styles.editForm} onSubmit={saveEditedReservation}>
+              <label className={styles.editField}>
+                <span>Navn</span>
+                <input
+                  value={editingDraft.name}
+                  onChange={(event) => updateDraftField("name", event.target.value)}
+                  required
+                />
+              </label>
+
+              <label className={styles.editField}>
+                <span>E-mail</span>
+                <input
+                  type="email"
+                  value={editingDraft.email}
+                  onChange={(event) => updateDraftField("email", event.target.value)}
+                  required
+                />
+              </label>
+
+              <label className={styles.editField}>
+                <span>Telefon</span>
+                <input
+                  type="tel"
+                  value={editingDraft.phone}
+                  onChange={(event) => updateDraftField("phone", event.target.value)}
+                  required
+                />
+              </label>
+
+              <label className={styles.editField}>
+                <span>Oplevelse</span>
+                <select
+                  value={editingDraft.activity}
+                  onChange={(event) => updateDraftField("activity", event.target.value)}
+                >
+                  {editActivityOptions.map((option) => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
+              </label>
+
+              <label className={styles.editField}>
+                <span>Antal personer</span>
+                <input
+                  type="number"
+                  min="1"
+                  max="100"
+                  value={editingDraft.people}
+                  onChange={(event) => updateDraftField("people", event.target.value)}
+                  required
+                />
+              </label>
+
+              <label className={styles.editField}>
+                <span>Dato</span>
+                <input
+                  type="date"
+                  value={editingDraft.date}
+                  onChange={(event) => updateDraftField("date", event.target.value)}
+                  required
+                />
+              </label>
+
+              <label className={styles.editField}>
+                <span>Tidspunkt</span>
+                <input
+                  type="time"
+                  value={editingDraft.time}
+                  onChange={(event) => updateDraftField("time", event.target.value)}
+                  required
+                />
+              </label>
+
+              <div className={styles.editActions}>
+                <button
+                  type="button"
+                  className={styles.cancelButton}
+                  onClick={() => {
+                    setEditingReservationId(null);
+                    setEditingDraft(null);
+                  }}
+                >
+                  Annuller
+                </button>
+                <button type="submit" className={styles.submitButton}>
+                  Gem ændringer
+                </button>
+              </div>
+            </form>
+          </section>
+        </div>
+      )}
     </div>
   );
 }

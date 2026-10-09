@@ -31,7 +31,7 @@
 
 .bookingRow {
   display: grid;
-  grid-template-columns: 34px minmax(0, 1fr) 24px;
+  grid-template-columns: 34px minmax(0, 1fr) auto;
   gap: 8px;
   align-items: center;
   min-height: 47px;
@@ -51,6 +51,31 @@
   font-family: "Barlow Condensed", sans-serif;
   font-size: 12px;
   font-weight: 800;
+}
+
+.bookingActions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  grid-column: 3;
+  justify-self: end;
+  margin-left: auto;
+}
+
+.editBookingButton {
+  padding: 5px 8px;
+  border: 1px solid #d7d0c2;
+  border-radius: 5px;
+  color: #38342f;
+  background: #f5f2eb;
+  font-size: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.editBookingButton:hover {
+  background: #ece5d7;
 }
 
 .bookingName {
@@ -149,6 +174,121 @@
   color: #77736a;
   font-size: 8px;
   line-height: 1.5;
+}
+
+.modalBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgb(26 21 17 / 32%);
+}
+
+.editModal {
+  width: min(540px, 100%);
+  border: 1px solid #e4dfd5;
+  border-radius: 12px;
+  background: #fffdf9;
+  box-shadow: 0 20px 45px rgb(41 30 19 / 18%);
+}
+
+.editModalHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 18px 18px 12px;
+  border-bottom: 1px solid #e8e2d9;
+}
+
+.editModalHeader h3 {
+  margin: 2px 0 0;
+  color: #1f1d1a;
+  font-size: 18px;
+}
+
+.editEyebrow {
+  margin: 0;
+  color: #8a8174;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.closeButton {
+  width: 28px;
+  height: 28px;
+  border: 0;
+  border-radius: 999px;
+  color: #524d45;
+  background: #f2eee9;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.editForm {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 14px;
+  padding: 18px;
+}
+
+.editField {
+  display: grid;
+  gap: 6px;
+  color: #4b4742;
+  font-size: 9px;
+  font-weight: 700;
+}
+
+.editField input,
+.editField select {
+  width: 100%;
+  min-height: 36px;
+  padding: 8px 10px;
+  border: 1px solid #d9d1c5;
+  border-radius: 7px;
+  background: #fff;
+  color: #1f1d1a;
+  font: inherit;
+}
+
+.editField:nth-last-child(-n + 2) {
+  grid-column: 1 / -1;
+}
+
+.editActions {
+  display: flex;
+  justify-content: flex-end;
+  grid-column: 1 / -1;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.cancelButton,
+.submitButton {
+  min-height: 36px;
+  padding: 0 14px;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  font-size: 9px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.cancelButton {
+  border-color: #d7d0c2;
+  color: #4d4944;
+  background: #f6f1ea;
+}
+
+.submitButton {
+  color: #fff;
+  background: linear-gradient(135deg, #7b63d6, #8a7ae8);
 }
 
 @media (max-width: 1050px) {
