@@ -69,12 +69,11 @@ function BookingPanels() {
   const [reservations, setReservations] = useState([]);
   const [activities, setActivities] = useState([]);
   const [deletingReservationId, setDeletingReservationId] = useState(null);
+  const [deleteConfirmationId, setDeleteConfirmationId] = useState(null);
   const [editingReservationId, setEditingReservationId] = useState(null);
   const [editingDraft, setEditingDraft] = useState(null);
 
   async function deleteReservation(reservationId) {
-    if (!window.confirm("Vil du slette denne booking?")) return;
-
     setDeletingReservationId(reservationId);
     try {
       const response = await fetch(
@@ -96,7 +95,12 @@ function BookingPanels() {
       // A network failure has no backend exception response to display.
     } finally {
       setDeletingReservationId(null);
+      setDeleteConfirmationId(null);
     }
+  }
+
+  function requestDeleteReservation(reservationId) {
+    setDeleteConfirmationId(reservationId);
   }
 
   useEffect(() => {
@@ -298,7 +302,7 @@ function BookingPanels() {
                   <button
                     className={styles.deleteBookingButton}
                     type="button"
-                    onClick={() => deleteReservation(booking.id)}
+                    onClick={() => requestDeleteReservation(booking.id)}
                     disabled={deletingReservationId === booking.id}
                     aria-label={`Slet booking: ${booking.activityName} med ${booking.customerName}`}
                     title="Slet booking"
@@ -335,6 +339,38 @@ function BookingPanels() {
           ))}
         </div>
       </section>
+
+      {deleteConfirmationId !== null && (
+        <div
+          className={styles.modalBackdrop}
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) {
+              setDeleteConfirmationId(null);
+            }
+          }}
+        >
+          <section className={styles.confirmModal} role="dialog" aria-modal="true">
+            <h3>Bekræft sletning</h3>
+            <p>Er du sikker på, at du vil slette denne booking?</p>
+            <div className={styles.editActions}>
+              <button
+                type="button"
+                className={styles.cancelButton}
+                onClick={() => setDeleteConfirmationId(null)}
+              >
+                Annuller
+              </button>
+              <button
+                type="button"
+                className={styles.deleteConfirmButton}
+                onClick={() => deleteReservation(deleteConfirmationId)}
+              >
+                Slet booking
+              </button>
+            </div>
+          </section>
+        </div>
+      )}
 
       {editingDraft && (
         <div
